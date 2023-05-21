@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?> <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.lgcns.tct.mapper.UsedataMapper">
+
+	<select id="getUseData" parameterType="String" resultType="com.lgcns.tct.dto.UsedataDto">
+        SELECT COUNT(*) AS usage_count
+     		, SUM(use_time) AS usage_minute
+     		, ROUND(SUM(use_distance)*1.0, 1) AS usage_meter
+     		, round(SUM(use_distance)/1000*0.232, 1) AS carbon_reduction
+		FROM kickboard_svc.t_svc_use
+		WHERE 1=1
+		AND user_no=#{user_no} 
+		AND DATE(use_start_dt)>=#{start_dt}
+    </select>
+
+
+	<!-- <select id="getUsedList" parameterType="String" resultType="com.lgcns.tct.dto.UsedListDto">
+		SELECT svc_use.use_no, user_no, 
+		IFNULL(c_pay.SVC_USE_PAY_NO,p_pay.SVC_USE_PAY_NO) AS svc_use_pay_no, use_distance, use_time, use_start_dt, use_end_dt,
+			IFNULL(c_pay.pay_datetime, p_pay.PAY_DATETIME) AS pay_datetime,
+			IFNULL(IF(c_pay.PAYMETHOD_CODE,'C', c_pay.PAY_COST),0) AS card_pay,
+			IFNULL(IF(p_pay.PAYMETHOD_CODE,'P', p_pay.PAY_COST),0) AS point_pay
+			FROM kickboard_svc.t_svc_use svc_use
+			LEFT JOIN kickboard_svc.t_svc_use_pay AS c_pay ON svc_use.USE_NO = c_pay.use_no AND c_pay.PAYMETHOD_CODE = 'C'
+			LEFT JOIN kickboard_svc.t_svc_use_pay AS p_pay ON svc_use.USE_NO = p_pay.use_no AND p_pay.PAYMETHOD_CODE = 'P'
+		WHERE 1=1
+		AND user_no=#{user_no} 
+		AND DATE(use_start_dt)>=#{start_dt}
+    </select> -->
+
+<!-- Pagenation 사용시 -->
+	<select id="getUsedList" parameterType="com.lgcns.tct.dto.UsedListRequestDto" resultType="com.lgcns.tct.dto.UsedListDto">
+		SELECT svc_use.use_no, user_no, 
+		IFNULL(c_pay.SVC_USE_PAY_NO,p_pay.SVC_USE_PAY_NO) AS svc_use_pay_no, use_distance, use_time, use_start_dt, use_end_dt,
+			IFNULL(c_pay.pay_datetime, p_pay.PAY_DATETIME) AS pay_datetime,
+			IFNULL(IF(c_pay.PAYMETHOD_CODE,'C', c_pay.PAY_COST),0) AS card_pay,
+			IFNULL(IF(p_pay.PAYMETHOD_CODE,'P', p_pay.PAY_COST),0) AS point_pay
+			FROM kickboard_svc.t_svc_use svc_use
+			LEFT JOIN kickboard_svc.t_svc_use_pay AS c_pay ON svc_use.USE_NO = c_pay.use_no AND c_pay.PAYMETHOD_CODE = 'C'
+			LEFT JOIN kickboard_svc.t_svc_use_pay AS p_pay ON svc_use.USE_NO = p_pay.use_no AND p_pay.PAYMETHOD_CODE = 'P'
+		WHERE 1=1
+		AND user_no=#{user_no} 
+		AND DATE(use_start_dt)>=#{start_dt}
+		LIMIT #{page_size} OFFSET #{offset}
+    </select>
+	
+</mapper>
