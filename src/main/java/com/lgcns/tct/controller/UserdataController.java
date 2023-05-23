@@ -4,6 +4,7 @@ import lombok.RequiredArgsConstructor;
 
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,9 +13,11 @@ import org.springframework.web.bind.annotation.RestController;
 import com.lgcns.tct.dto.UsedListRequestDto;
 import com.lgcns.tct.dto.UsedataDto;
 import com.lgcns.tct.dto.UserInfoDto;
+import com.lgcns.tct.dto.UserInsertDto;
 import com.lgcns.tct.service.UsedataService;
 import com.lgcns.tct.service.UserService;
 import java.util.Calendar;
+import java.util.List;
 import java.util.Map;
 
 @RestController
@@ -75,7 +78,13 @@ public class UserdataController {
 		Map<String, Object> result = usedataService.getUsedList(request);
 
 		return result;
+	}
 
+	//insert Test
+	@RequestMapping(value = "/user", method = RequestMethod.POST)
+	public int postUser(@RequestBody List<UserInsertDto> users) {	
+		int result = userService.postUserInfo(users);
+		return result;
 	}
 
 

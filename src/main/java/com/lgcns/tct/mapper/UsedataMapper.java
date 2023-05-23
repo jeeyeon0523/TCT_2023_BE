@@ -20,6 +20,7 @@ public interface UsedataMapper {
 
     //pageNation
     List<UsedListDto> getUsedList(UsedListRequestDto request);
+    int getUsedListTotalCount(UsedListRequestDto request);
 
 }
 

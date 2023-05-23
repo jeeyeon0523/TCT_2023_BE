@@ -49,7 +49,9 @@ public class UseddataServiceimpl implements UsedataService {
 		int offset = request.getPage_size() * (request.getPage_index() -1);
 		request.setOffset(offset);
 		List<UsedListDto> list = usedataMapper.getUsedList(request);
+		int totalCount = usedataMapper.getUsedListTotalCount(request);
 		result.put("list", list);
+		result.put("totalCount", totalCount);
 
 		return result;
 	}

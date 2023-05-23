@@ -26,6 +26,7 @@
 		WHERE 1=1
 		AND user_no=#{user_no} 
 		AND DATE(use_start_dt)>=#{start_dt}
+		ORDER BY use_start_dt DESC
     </select> -->
 
 <!-- Pagenation 사용시 -->
@@ -41,7 +42,16 @@
 		WHERE 1=1
 		AND user_no=#{user_no} 
 		AND DATE(use_start_dt)>=#{start_dt}
+		ORDER BY use_start_dt DESC
 		LIMIT #{page_size} OFFSET #{offset}
+    </select>
+
+	<select id="getUsedListTotalCount" parameterType="com.lgcns.tct.dto.UsedListRequestDto" resultType="Integer">
+		SELECT count(*)
+		FROM kickboard_svc.t_svc_use svc_use
+		WHERE 1=1
+		AND user_no=#{user_no} 
+		AND DATE(use_start_dt)>=#{start_dt}
     </select>
 	
 </mapper>

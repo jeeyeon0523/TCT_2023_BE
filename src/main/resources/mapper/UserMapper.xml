@@ -6,4 +6,17 @@
         SELECT USER_NO AS user_no, NAME AS name  FROM kickboard_svc.t_user WHERE user_no = #{user_no}
     </select>
 
+    <insert id="postUserInfo" parameterType="java.util.List" >
+        INSERT INTO kickboard_svc.t_user
+	        (USER_NO, NAME, EMAIL)
+	    VALUES 
+        <foreach collection="list" item="item" separator="," >
+            (
+                #{item.user_no},
+                #{item.name, jdbcType=VARCHAR}, 
+                #{item.email}
+            )
+        </foreach>
+    </insert>
+
 </mapper>
